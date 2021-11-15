@@ -1,0 +1,97 @@
+description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
+url="http://www.cups.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(pam libusb avahi python gnutls)
+run=(xdg-utils gtk-update-icon-cache
+     cups.lib)
+
+set=(cups printer)
+
+PKGMK_GROUPS=(devel man lib)
+
+name=cups
+version=2.3.3
+release=3
+
+runyx_version=20200412
+
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz \
+	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
+	99-printer.rules)
+prepare() {
+
+SN="lpadmin"
+IDN="19"
+UN="lp"
+
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+
+UN="lp"
+IDN="9"
+if ! (getent passwd $UN > /dev/null); then
+   useradd -c "Printer Service User" -d /var/spool/cups \
+   -u $IDN -g $UN -s /bin/false -u $UN
+fi
+}
+
+build() {
+	cd $name-$version
+	sed -i '/stat.h/a #include <asm-generic/ioctls.h>' tools/ipptool.c
+
+	CC=gcc CXX=g++ \
+	./configure --libdir=/usr/lib \
+		--with-rcdir=/tmp/cupsinit \
+		--with-system-groups=lpadmin \
+		--with-docdir=/usr/share/cups/doc-$version \
+		--disable-libusb
+	make
+	make BUILDROOT=$PKG install
+
+	rm -rf $PKG/tmp
+	mkdir -p $PKG/usr/share/doc
+	ln -svnf ../cups/doc-$version $PKG/usr/share/doc/cups-$version
+	
+	# Lanceur
+	if [ ! -f $PKG/usr/share/applications/cups.desktop ]; then
+		mkdir -p $PKG/usr/share/applications
+		install -m644 desktop/cups.desktop \
+		$PKG/usr/share/applications/cups.desktop
+	fi
+	# Service
+	cd ../runyx-${runyx_version}
+	make DESTDIR=$PKG install-sysv-$name
+	make DESTDIR=$PKG install-runyx-$name
+
+
+	# Supprimer les filtres faisant parti de cups-filters
+	rm -rf $PKG/usr/share/cups/banners
+	rm -rf $PKG/usr/share/cups/data/testprint
+	
+	chmod 755 $PKG/etc
+
+	# PAM
+	cat > $PKG/etc/pam.d/cups << "EOF"
+# Begin /etc/pam.d/cups
+
+auth    include system-auth
+account include system-account
+session include system-session
+
+# End /etc/pam.d/cups
+EOF
+	mkdir -p $PKG/etc/udev/rules.d
+	install -m644 ../99-printer.rules  $PKG/etc/udev/rules.d/99-printer.rules
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/libcups*
+rm usr/lib/libcups*
+rm -d usr/lib || true
+}

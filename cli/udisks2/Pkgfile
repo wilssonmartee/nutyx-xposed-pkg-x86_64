@@ -1,0 +1,28 @@
+description="Daemon, tools and libraries to access and manipulate disks and storage devices."
+url="http://www.freedesktop.org/wiki/Software/udisks"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
+
+makedepends=(systemd acl attr libgudev expat libatasmart libxslt polkit gobject-introspection docbook-xsl libblockdev)
+
+name=udisks2
+version=2.9.4
+
+source=(https://github.com/storaged-project/udisks/releases/download/udisks-$version/udisks-$version.tar.bz2)
+
+build() {
+cd udisks-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static
+make
+
+sed -i -r 's/^ +\././' doc/man/*.[158]
+
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libudisks2.la
+}

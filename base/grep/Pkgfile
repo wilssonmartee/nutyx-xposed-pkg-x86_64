@@ -1,0 +1,24 @@
+description="Searches input(s) file(s) for lines containing a match to a specified pattern."
+url="http://www.gnu.org/software/grep/"
+
+maintainer="Jim Meyering jim at meyering dot net,Paolo Bonzini bonzini at gnu dot org"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(perl)
+
+name=grep
+version=3.7
+
+PKGMK_LOCALES=()
+
+source=(http://ftp.gnu.org/gnu/grep/grep-$version.tar.xz)
+
+build()
+{
+cd grep-$version
+
+./configure --prefix=/usr --bindir=/bin
+make
+make -k check || true
+make DESTDIR=$PKG install
+}

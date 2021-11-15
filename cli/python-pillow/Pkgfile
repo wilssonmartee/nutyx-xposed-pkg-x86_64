@@ -1,0 +1,26 @@
+description="Python Imaging Library"
+url="https://pypi.python.org/pypi/Pillow"
+
+maintainer="https://github.com/python-pillow/Pillow/releases.atom"
+packager="spiky <spiky@nutyx.org>"
+contributors="hugo, Rémy, tnut"
+
+makedepends=(lcms2 libtiff freetype openjpeg libwebp)
+run=(python)
+
+name=python-pillow
+version=8.4.0
+release=2
+
+source=(https://files.pythonhosted.org/packages/7d/2a/2fc11b54e2742db06297f7fa7f420a0e3069fdcf0e4b57dfec33f0b08622/Pillow-$version.tar.gz)
+
+build(){
+cd Pillow-$version
+python3 setup.py build
+python3 setup.py install --root=$PKG --optimize=1
+}
+uptodate() {
+lynx -read_timeout=20 -dump -listonly -nonumbers $maintainer \
+grep release | grep alternate | grep tag| \
+head -1 | cut -d "/" -f9|sed 's@\"@@'
+}

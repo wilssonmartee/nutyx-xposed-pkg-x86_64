@@ -1,0 +1,17 @@
+description="Library for opening, seeking, and decoding .opus files"
+url="http://www.opus-codec.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+makedepends=(libogg openssl opus)
+
+name=opusfile
+version=0.12
+
+source=(http://downloads.xiph.org/releases/opus/$name-$version.tar.gz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libopus{file,url}.la
+}

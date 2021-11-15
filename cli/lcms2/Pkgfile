@@ -1,0 +1,24 @@
+description="Lightweight color management development library/engine"
+url="http://www.littlecms.com/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+makedepends=(libjpeg-turbo libtiff)
+
+name=lcms2
+version=2.12
+
+source=(https://sourceforge.net/projects/lcms/files/lcms/$version/$name-$version.tar.gz)
+
+build() {
+cd $name*
+./configure --prefix=/usr \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info \
+--disable-static
+make
+make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/liblcms2.la
+}

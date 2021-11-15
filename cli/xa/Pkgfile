@@ -1,0 +1,16 @@
+description="Cross-assembler for 6502 microprocessor"
+url="http://www.floodgap.com/retrotech/xa/"
+
+contributors="Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=xa
+version=2.3.11
+
+source=(http://www.floodgap.com/retrotech/$name/dists/$name-$version.tar.gz)
+
+build(){
+cd ${name}-${version}
+make
+make DESTDIR="${PKG}/usr" install
+}

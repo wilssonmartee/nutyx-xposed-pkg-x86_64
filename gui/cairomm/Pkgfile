@@ -1,0 +1,24 @@
+description="C++ bindings to Cairo vector graphics library"
+url="http://cairographics.org/"
+
+maintainer="Murray Cumming <murrayc@murrayc.com>"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
+
+makedepends=(meson ninja cairo libsigc++)
+
+name=cairomm
+version=1.14.3
+
+source=(http://cairographics.org/releases/$name-$version.tar.xz)
+
+build=meson
+
+uptodate() {
+local url ext
+
+url="https://www.cairographics.org/releases/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}

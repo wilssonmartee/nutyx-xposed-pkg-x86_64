@@ -1,0 +1,105 @@
+description="A cross-platform application and UI framework, QtTools files"
+url="http://qt-project.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+makedepends=(qtbase qtdeclarative desktop-file-utils hicolor-icon-theme xdg-utils vulkan-headers)
+
+name=qttools
+version=5.15.2
+
+_name="${name}-everywhere-src"
+
+source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+
+build() {
+mkdir build
+cd    build
+qmake ../${_name}-${version}
+make
+make INSTALL_ROOT=$PKG install
+
+mkdir $PKG/usr/share/applications
+
+cat > $PKG/usr/share/applications/assistant-qt.desktop << "EOf"
+[Desktop Entry]
+Name=Qt5 Assistant
+Comment=Shows Qt5 documentation and examples
+Exec=assistant
+Icon=assistant
+Terminal=false
+Encoding=UTf-8
+Type=Application
+Categories=Qt;Development;Documentation;
+EOf
+
+cat > $PKG/usr/share/applications/designer-qt.desktop << "EOf"
+[Desktop Entry]
+Name=Qt5 Designer
+GenericName=interface Designer
+Comment=Design GUis for Qt5 applications
+Exec=designer
+Icon=designer
+mimeType=application/x-designer;
+Terminal=false
+Encoding=UTf-8
+Type=Application
+Categories=Qt;Development;
+EOf
+
+cat > $PKG/usr/share/applications/linguist-qt.desktop << "EOf"
+[Desktop Entry]
+Name=Qt5 Linguist
+Comment=Add translations to Qt5 applications
+Exec=linguist
+Icon=linguist
+mimeType=text/vnd.trolltech.linguist;application/x-linguist;
+Terminal=false
+Encoding=UTf-8
+Type=Application
+Categories=Qt;Development;
+EOf
+
+cat > $PKG/usr/share/applications/qdbusviewer-qt.desktop << "EOf"
+[Desktop Entry]
+Name=Qt5 QDbusviewer
+GenericName=D-Bus Debugger
+Comment=Debug D-Bus applications
+Exec=qdbusviewer
+Icon=qdbusviewer
+Terminal=false
+Encoding=UTf-8
+Type=Application
+Categories=Qt;Development;Debugger;
+EOf
+
+cd ../${_name}-${version}
+
+# install missing icons and desktop files
+for icon in src/linguist/linguist/images/icons/linguist-*-32.png ; do
+   size=$(echo $(basename ${icon}) | cut -d- -f2)
+   install -p -D -m644 ${icon} \
+      "${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png"
+done
+
+install -D -m644 src/assistant/assistant/images/assistant.png \
+    "${PKG}/usr/share/icons/hicolor/32x32/apps/assistant.png"
+  install -D -m644 src/assistant/assistant/images/assistant-128.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/assistant.png"
+  install -D -m644 src/designer/src/designer/images/designer.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/QtProject-designer.png"
+  install -D -m644 src/qdbus/qdbusviewer/images/qdbusviewer.png \
+    "${PKG}/usr/share/icons/hicolor/32x32/apps/qdbusviewer.png"
+  install -D -m644 src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/qdbusviewer.png"
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+       -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Obsolets libs
+rm $PKG/usr/lib/libQt5Designer.la
+rm $PKG/usr/lib/libQt5DesignerComponents.la
+rm $PKG/usr/lib/libQt5Help.la
+rm $PKG/usr/lib/libQt5UiTools.la
+rm $PKG/usr/lib/Qt5UiPlugin.la
+}

@@ -1,0 +1,30 @@
+description="database of photographic lenses and a library that allows advanced access to the database"
+url="http://lensfun.berlios.de"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(cmake glib libpng doxygen python-docutils)
+
+name=lensfun
+version=0.3.95
+release=4
+
+source=(lensfun-segfault.patch
+	https://sourceforge.net/projects/$name/files/$version/$name-$version.tar.gz
+	)
+prepare() {
+cd $name-$version
+patch -p1 -i ../lensfun-segfault.patch
+}
+build(){
+cd $name-$version
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+ -DBUILD_DOC=on \
+  -Wno-dev
+make
+make docs
+make DESTDIR=$PKG install
+} 

@@ -1,0 +1,36 @@
+description="Multicast/unicast DNS-SD framework"
+url="http://www.avahi.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, jayce, Rems, tnut"
+
+makedepends=(intltool libevent glib gobject-introspection libdaemon dbus)
+
+name=avahi
+version=0.8
+
+source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--with-distro=none   \
+--disable-mono \
+--disable-python \
+--disable-gtk3 \
+--disable-qt3 \
+--disable-qt4 \
+--disable-qt5 \
+--disable-gtk \
+--disable-monodoc \
+--enable-core-docs \
+--with-systemdsystemunitdir=/lib/systemd/system
+make
+make DESTDIR=$PKG install
+
+rm -fr $PKG/{etc/avahi,var,usr/share/man/man8,usr/sbin}
+rm $PKG/usr/lib/libavahi-{common,core,client,glib,gobject}.la
+}

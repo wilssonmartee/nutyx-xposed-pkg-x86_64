@@ -1,0 +1,16 @@
+description="Netfilter library providing interface to the nf_tables subsystem"
+url="http://netfilter.org/projects/libnftnl/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Alienus"
+
+makedepends=(libmnl)
+
+name=libnftnl
+version=1.2.0
+
+source=(http://netfilter.org/projects/libnftnl/files/libnftnl-$version.tar.bz2)
+package() {
+    # Obsolet lib
+    rm $PKG/usr/lib/libnftnl.la
+}

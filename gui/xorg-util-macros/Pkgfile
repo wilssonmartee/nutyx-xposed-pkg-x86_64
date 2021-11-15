@@ -1,0 +1,12 @@
+description="util-macros, contains the macros m4 used by the packages xorg"
+url="http://www.x.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+name=xorg-util-macros
+_name=util-macros
+version=1.19.3
+
+source=(https://www.x.org/archive//individual/util/$_name-$version.tar.gz)
+
+build=xorg

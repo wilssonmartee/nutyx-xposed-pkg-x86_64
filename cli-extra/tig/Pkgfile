@@ -1,0 +1,21 @@
+description="Text-mode interface for Git."
+url="http://jonas.nitro.dk/tig/"
+
+contributors="Greg, Rems"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(git ncurses asciidoc xmlto)
+
+name=tig
+version=2.5.4
+
+source=(https://github.com/jonas/$name/releases/download/$name-$version/$name-$version.tar.gz)
+
+build() {
+
+	cd $name-$version
+	./configure --prefix=/usr --sysconfdir=/etc
+	make
+	make DESTDIR=$PKG install install-doc-man
+	install -Dm0644 contrib/tig-completion.bash "$PKG/usr/share/bash-completion/completions/tig"
+}

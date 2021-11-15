@@ -1,0 +1,22 @@
+description=" Papirus icon theme for Linux"
+url="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="DamnKid, Greg, spiky"
+
+makedepends=(gtk-update-icon-cache)
+run=(gtk-update-icon-cache)
+
+name=papirus-icon-theme
+version=20211101
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(${url}/archive/$version.tar.gz)
+
+build() {
+
+	cd ${name}-$version
+	make DESTDIR=$PKG install
+	
+}

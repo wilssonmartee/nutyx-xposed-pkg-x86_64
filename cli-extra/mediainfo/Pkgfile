@@ -1,0 +1,21 @@
+description="Show technical and tag informations about video or audio file."
+url="https://mediaarea.net/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg, Remy"
+
+makedepends=(libmediainfo)
+
+name=mediainfo
+version=21.03
+
+source=(https://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
+
+build() {
+
+  cd MediaInfo/Project/GNU/CLI
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}

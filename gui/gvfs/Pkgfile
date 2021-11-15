@@ -1,0 +1,47 @@
+description="Userspace virtual filesystem implemented as a pluggable module for gio"
+url="http://www.gnome.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Tyrry, tnut"
+
+makedepends=(ninja meson libcdio-paranoia avahi dbus-glib libgdata libgudev
+             libbluray intltool libsecret gtk3 libsoup udisks2 obexd fuse2 fuse
+             libarchive libmtp samba bluez gcr libgphoto2 libnfs openssh)
+
+name=gvfs
+version=1.48.1
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz
+       handle-inactive-vfs.patch)
+
+build() {
+cd $name-$version
+
+patch -Np1 -i ../handle-inactive-vfs.patch
+
+mkdir build &&
+cd    build &&
+
+meson --prefix=/usr     \
+      --sysconfdir=/etc \
+      -Dafc=false       \
+      -Ddnssd=false     \
+      -Dgoa=false       \
+      -Dgoogle=false    \
+      -Dtmpfilesdir=no  \
+      -Dlogind=false    \
+      -Dsystemduserunitdir=no ..
+ninja
+
+DESTDIR=$PKG ninja install
+}
+
+uptodate(){
+local latest lastversion url
+url="https://download.gnome.org/sources/$name"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}

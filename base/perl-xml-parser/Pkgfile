@@ -1,0 +1,25 @@
+description="Perl module for processing xml document"
+url="https://metacpan.org/pod/XML::Parser"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(expat)
+run=(perl)
+
+set=(devel)
+
+
+name=perl-xml-parser
+version=2.46
+release=3
+
+source=(http://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-$version.tar.gz)
+run=(perl)
+
+build() {
+cd XML-Parser-$version
+perl Makefile.PL
+make OPTIMIZE="$CFLAGS"
+make DESTDIR=$PKG install
+}

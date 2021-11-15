@@ -1,0 +1,44 @@
+description="Linker, assembler, and other tools for handling object files."
+url="http://sources.redhat.com/binutils/"
+maintainer="Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra at bigpond dot net dot au )"
+packager="tnut <tnut@nutyx.org>"
+
+name=binutils
+version=2.37
+
+source=(https://www.linuxfromscratch.org/patches/lfs/development/binutils-$version-upstream_fix-1.patch
+	http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
+build()
+{
+cd binutils-$version
+
+patch -Np1 -i ../binutils-$version-upstream_fix-1.patch
+
+sed -i '63d' etc/texi2pod.pl
+find -name \*.1 -delete
+
+mkdir -v build
+cd build
+
+../configure --prefix=/usr \
+--enable-gold \
+--enable-ld=default \
+--enable-plugins \
+--enable-shared \
+--disable-werror \
+--enable-64-bit-bfd \
+--with-system-zlib
+
+make tooldir=/usr
+
+make tooldir=/usr DESTDIR=$PKG install -j1
+}
+devel()
+{
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/include usr/lib/ldscripts
+rm -r usr/include \
+usr/lib/ldscripts
+}

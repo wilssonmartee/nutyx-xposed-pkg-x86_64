@@ -1,0 +1,54 @@
+description="A set of utilities to manage software packages on NuTyX distribution."
+url="https://github.com/NuTyX/cards"
+
+maintainer="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+
+alias=(card)
+
+
+PKGMK_IGNORE_RUNTIMEDEPS="no"
+makedepends=(bzip2 gettext xz util-linux)
+run_devel=(curl.devel gcc.devel glibc.devel libarchive.devel \
+openssl.devel zlib.devel bash binutils coreutils file \
+findutils gawk gettext groff make patch pkg-config \
+readline wget rsync xz)
+
+PKGMK_GROUPS=(devel doc man)
+PKGMK_LOCALES=()
+
+name=cards
+version=2.4.140
+
+[ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
+
+source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.gz)
+
+[ -z "$patchname" ] || source+=" $patchname"
+
+
+build () {
+cd $name-$version
+[ -z "$patchname" ] || patch -Np1 -i ../$patchname
+
+
+make all
+make DESTDIR=$PKG install
+mkdir -p $PKG/{etc,usr}/ports
+
+mkdir -p $PKG/usr/share/doc/cards-$version
+install -m644 ChangeLog \
+$PKG/usr/share/doc/cards-$version/ChangeLog
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
+usr/bin \
+usr/ports \
+var/lib/pkg/drivers \
+etc/ports \
+etc/pkgmk.conf.example
+rm -rf var/lib/pkg/drivers usr/bin usr/ports etc/pkgmk.conf.example etc/ports 
+}

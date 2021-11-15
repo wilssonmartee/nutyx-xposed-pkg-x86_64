@@ -1,0 +1,90 @@
+description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
+url="http://hplipopensource.com"
+
+contributors="Greg, Spiky"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(avahi python ghostscript foomatic-db usbutils
+             sane cups cups-filters cups-pk-helper libusb net-snmp)
+
+run=(sip dbus-python python-qt python-pillow foomatic-db-engine
+     python-distro python-dbus)
+
+
+name=hplip
+version=3.20.11
+
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
+	https://launchpadlibrarian.net/480406888/hplip-configure-python.patch
+        0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+        0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+        0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
+	reproducible-gzip.patch)
+
+prepare() {
+ cd $name-$version
+ 
+ # add missing 'include <cups/ppd.h>' at various places
+ patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+
+ # fix some handling unicode file names FS#58412
+ patch -Np1 -i ../0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+
+ # remove binary blob libImageProcessor and all linking - FS#59681
+ patch -Np1 -i ../0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
+
+ # https://bugs.launchpad.net/hplip/+bug/1879445
+ patch -Np1 -i ../hplip-configure-python.patch
+
+ # make gzip creation reproducible by removing the timestamp
+ patch -Np1 -i ../reproducible-gzip.patch
+
+ export AUTOMAKE='automake --foreign'
+ autoreconf --force --install
+}
+
+build() {
+ export PYTHON=/usr/bin/python3
+ cd $name-$version
+ ./configure --prefix=/usr \
+             --enable-qt5 \
+             --disable-qt4 \
+             --enable-hpcups-install \
+             --enable-cups-drv-install \
+             --enable-pp-build #--help
+ make
+}
+
+package() {
+ cd $name-$version
+ make -j1 DESTDIR=$PKG install
+ 
+ # remove config provided by sane and autostart of hp-daemon
+ rm -rf $PKG/etc/{sane.d,xdg}
+ install -dm755 $PKG/etc/sane.d/dll.d
+ echo hpaio > $PKG/etc/sane.d/dll.d/hpaio
+ 
+ # remove HAL .fdi file because HAL is no longer used
+ rm -vrf $PKG/usr/share/hal
+ 
+ # remove rc script
+ rm -vrf $PKG/etc/init.d
+
+ # add mixed license file
+ install -Dt $PKG/usr/share/licenses/$name -m644 COPYING
+
+ python3 -m compileall -d /usr/share $PKG/usr/share
+ python3 -O -m compileall -d /usr/share $PKG/usr/share
+
+ rm $PKG/usr/lib/python3.9/site-packages/hpmudext.la
+ rm $PKG/usr/lib/python3.9/site-packages/pcardext.la
+ rm $PKG/usr/lib/python3.9/site-packages/cupsext.la
+ rm $PKG/usr/lib/python3.9/site-packages/scanext.la
+ rm $PKG/usr/lib/libhpdiscovery.la
+ rm $PKG/usr/lib/sane/libsane-hpaio.la
+ rm $PKG/usr/lib/libhpmud.la
+ rm $PKG/usr/lib/libhpipp.la
+ rm $PKG/usr/lib/libhpip.la
+
+
+}

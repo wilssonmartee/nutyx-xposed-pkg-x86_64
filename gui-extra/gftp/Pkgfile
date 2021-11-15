@@ -1,0 +1,12 @@
+description="A multithreaded ftp client for X Windows"
+url="http://gftp.seul.org/"
+
+contributors="Pierre B, Greg, tnut"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(gtk2 xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama)
+
+name=gftp
+version=2.7.1b
+
+source=(https://github.com/masneyb/$name/releases/download/$version/$name-$version.tar.xz)

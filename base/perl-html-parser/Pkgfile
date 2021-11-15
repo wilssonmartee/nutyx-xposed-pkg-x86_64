@@ -1,0 +1,25 @@
+description="Perl HTML parser class"
+url="https://metacpan.org/pod/HTML::Parser"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Remy"
+
+makedepends=(perl-html-tagset)
+run=(perl)
+
+name=perl-html-parser
+version=3.76
+release=2
+
+source=(https://www.cpan.org/authors/id/O/OA/OALDERS/HTML-Parser-$version.tar.gz)
+
+build() {
+cd HTML-Parser-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+
+find $PKG \
+        -name '*.bs' -or \
+        -name .packlist -delete
+}

@@ -1,0 +1,33 @@
+description="A system and process level monitor."
+url="http://www.atoptool.nl/"
+
+contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(ncurses zlib)
+
+name=atop
+version=2.6.0
+
+source=(http://www.atoptool.nl/download/atop-${version/_/-}.tar.gz)
+
+prepare() {
+  mkdir -p $PKG/etc/default
+}
+
+build() {
+  cd $name-$version
+  make DESTDIR=$PKG systemdinstall SBINPATH=/usr/bin
+}
+
+package() {
+
+cat  > $PKG/etc/default/atop << EOF
+## default options
+#LOGOPTS="-R"
+## default interval in seconds
+#LOGINTERVAL=600
+## default number of days
+#LOGGENERATIONS=28
+EOF
+}

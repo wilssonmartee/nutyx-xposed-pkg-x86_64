@@ -1,0 +1,24 @@
+description="TrueType library for libsdl."
+url="http://www.libsdl.org/projects/SDL_ttf/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Fanch"
+
+makedepends=(freetype sdl)
+
+name=sdl-ttf
+version=2.0.15
+
+source=(http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$version.tar.gz)
+
+build() {
+	cd SDL2_ttf-$version
+
+	./configure \
+		--prefix=/usr \
+		--disable-dependency-tracking
+
+	make 
+	make DESTDIR=$PKG install
+
+}

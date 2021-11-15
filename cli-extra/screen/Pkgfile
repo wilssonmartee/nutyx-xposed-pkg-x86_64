@@ -1,0 +1,39 @@
+description="Runs several separate processes on a single physical character-based terminal."
+url="http://www.gnu.org/software/screen/screen.html"
+
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(patch)
+
+name=screen
+version=4.8.0
+release=2
+
+source=(upstream_fixes-1.patch
+	ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+patch -Np1 -i ../upstream_fixes-1.patch
+./configure --prefix=/usr         \
+--infodir=/usr/share/info         \
+--mandir=/usr/share/man           \
+--with-socket-dir=/run/screen     \
+--with-pty-group=5                \
+--with-sys-screenrc=/etc/screenrc
+sed -i -e "s%/usr/local/etc/screenrc%/etc/screenrc%" {etc,doc}/*
+make
+make DESTDIR=$PKG install
+mkdir $PKG/etc
+install -m 644 etc/etcscreenrc \
+$PKG/etc/screenrc
+}
+
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="http://ftp.gnu.org/gnu/screen"
+
+lynx -dump -listonly --nonumbers $url/?O=A|tail -2|grep $ext$|sed s@$url/$name-@@|sed s@$ext@@
+}

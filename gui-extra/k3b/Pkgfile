@@ -1,0 +1,34 @@
+description="Feature-rich and easy to handle CD burning application"
+url="https://apps.kde.org/k3b/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut, fabienwang"
+
+makedepends=(qtbase extra-cmake-modules karchive
+             kconfig kcoreaddons kdoctools kfilemetadata ki18n
+             kiconthemes kjobwidgets kcmutils kio knotifications
+             knewstuff knotifyconfig kservice solid kwidgetsaddons
+             kxmlgui libsamplerate libmad ffmpeg taglib
+             libmpcdec libdvdread xorg-libxft cdparanoia
+             libmusicbrainz5 syndication)
+run=(shared-mime-info cdrdao dvd+rw-tools cdrtools libburn 
+     libkcddb)
+
+name=k3b
+version=21.08.3
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

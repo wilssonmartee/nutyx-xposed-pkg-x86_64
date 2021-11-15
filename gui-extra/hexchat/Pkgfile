@@ -1,0 +1,27 @@
+url="https://dl.hexchat.net/hexchat"
+description="IRC chat program. It allows you to join multiple IRC channels at the sametime"
+
+contributors="Berlius,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
+
+name=hexchat
+version=2.16.0
+
+makedepends=(ninja meson iso-codes glib gtk2 lua dbus python-cffi
+             libnotify libcanberra openssl pciutils
+             python desktop-file-utils shared-mime-info)
+run=(desktop-file-utils shared-mime-info)
+
+source=(https://dl.hexchat.net/hexchat/$name-$version.tar.xz)
+ 
+build() {
+
+cd $name-$version
+
+mkdir build 
+cd build
+
+meson --prefix=/usr -Dwith-libproxy=false -Dwith-lua=lua ..
+ninja
+DESTDIR=$PKG ninja install
+}

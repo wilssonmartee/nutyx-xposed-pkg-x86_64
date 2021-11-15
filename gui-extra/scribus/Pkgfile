@@ -1,0 +1,32 @@
+description="Desktop publishing software"
+url="http://www.scribus.net"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, spiky, tnut"
+
+makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos
+             boost ghostscript lcms libxml2 cairo desktop-file-utils shared-mime-info poppler)
+run=(shared-mime-info)
+
+name=scribus
+version=1.5.7
+release=2
+
+source=(https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
+
+build() {
+	cd $name-$version
+	mkdir build
+	cd build
+	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_SKIP_RPATH=ON \
+                -DLIB_SUFFIX=""
+	make
+	make DESTDIR=$PKG install
+	ln -sv /usr/share/scribus/icons/1_5_0/lab.png $PKG/usr/share/scribus/icons/1_5_1/lab.png
+        ln -sv /usr/share/scribus/icons/1_5_0/spot.png $PKG/usr/share/scribus/icons/1_5_1/spot.png
+        ln -sv /usr/share/scribus/icons/1_5_0/register.png $PKG/usr/share/scribus/icons/1_5_1/register.png
+        install -Dm644 ../scribus.desktop \
+	$PKG/usr/share/applications/scribus.desktop
+        
+}

@@ -1,0 +1,25 @@
+description="A C library for reading and writing files containing sampled sound"
+url="http://www.mega-nerd.com/libsndfile/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(flac alsa-lib libogg libvorbis cmake)
+
+name=libsndfile
+version=1.0.31
+
+source=(https://github.com/libsndfile/libsndfile/releases/download/$version/libsndfile-$version.tar.bz2)
+
+build() {
+cd $name-$version
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE='None' \
+	-DBUILD_SHARED_LIBS=ON \
+	-Wno-dev \
+	-B build \
+        -S .
+make VERBOSE=1 -C build
+
+make DESTDIR=$PKG  install -C build
+}

@@ -1,0 +1,29 @@
+description="Command line editor library providing generic line editing, history, and tokenization functions."
+url="http://thrysoee.dk/editline/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg, tnut"
+
+makedepends=(ncurses)
+
+name=libedit
+_version=20210910-3.1
+version=${_version/-/_}
+
+source=(http://thrysoee.dk/editline/libedit-${_version}.tar.gz)
+
+build(){
+    cd $name-${_version}
+    ./configure --prefix=/usr \
+                --enable-widec
+    make
+    make DESTDIR=$PKG install
+
+    # conflicts with readline
+    rm $PKG/usr/share/man/man3/history.3
+    cp $PKG/usr/share/man/man3/editline.3 \
+    $PKG/usr/share/man/man3/el.3
+
+    # rm .la
+    rm $PKG/usr/lib/$name.la
+}

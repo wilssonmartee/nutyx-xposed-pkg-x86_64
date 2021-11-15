@@ -1,0 +1,23 @@
+description="The Quasar DV codec (libdv) is a software codec for DV video"
+url="http://downloads.sourceforge.net/libdv"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(popt sdl xorg-libxv)
+
+name=libdv
+version=1.0.0
+release=3
+
+source=(http://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz)
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-xv \
+--disable-static
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libdv.la
+}

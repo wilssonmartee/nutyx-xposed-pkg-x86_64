@@ -1,0 +1,22 @@
+
+description="Games of scripts multiplatforme for Linux and other systems unix"
+url="http://www.gnome.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="B. juglas"
+
+makedepends=(perl-xml-parser dbus-glib polkit)
+
+name=system-tools-backends
+version=2.10.2
+release=2
+
+source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}  

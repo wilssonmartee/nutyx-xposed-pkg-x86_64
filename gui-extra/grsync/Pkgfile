@@ -1,0 +1,27 @@
+description="GUI for rsync"
+url="https://github.com/FreeRDP/Remmina/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Remy"
+
+makedepends=(gtk3 rsync intltool)
+run=(rsync)
+
+name=grsync
+version=1.3.0
+release=2
+
+source=(http://www.opbyte.it/release/$name-$version.tar.gz
+        gtk3-port.patch)
+
+build() {
+
+cd $name-$version
+#patch -Np1 -i ../gtk3-port.patch
+  autoreconf -fi
+
+./configure --prefix=/usr --disable-unity
+make
+  
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,34 @@
+description="The GTK+ update icon cache tool"
+url="http://www.gtk.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, Spiky, tnut"
+
+makedepends=(glib gdk-pixbuf atk pango xorg-libxi)
+
+name=gtk-update-icon-cache
+version=3.24.30
+
+PKGMK_DEPENDS=(libepoxy mesa xorg-libxdamage xorg-libdrm \
+	       at-spi2-atk dbus at-spi2-core xorg-libxtst)
+
+source=(https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+
+build() {
+cd gtk+-$version
+sed -i 's#.*@man_#man_#' docs/reference/gtk/Makefile.in
+./configure
+cd gtk
+make gtk-update-icon-cache
+mkdir -p $PKG/usr/{bin,share/man/man1}
+install -c gtk-update-icon-cache $PKG/usr/bin/gtk-update-icon-cache
+install -c -m644 ../docs/reference/gtk/gtk-update-icon-cache.1 \
+$PKG/usr/share/man/man1
+
+}
+uptodate(){
+local lastversion
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+https://download.gnome.org/sources/gtk+/${version:0:4}/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}

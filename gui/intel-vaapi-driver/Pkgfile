@@ -1,0 +1,25 @@
+description="Intel VA-API driver"
+url="http://www.intel.com"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(xorg-libdrm libva doxygen wayland)
+
+name=intel-vaapi-driver
+version=2.4.1
+
+source=(https://github.com/intel/$name/releases/download/$version/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+            --disable-static
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/dri/i965_drv_video.la
+}

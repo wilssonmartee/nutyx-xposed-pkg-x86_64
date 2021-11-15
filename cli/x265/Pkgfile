@@ -1,0 +1,24 @@
+description="Open Source H265/HEVC video encoder."
+url="https://bitbucket.org/multicoreware/x265/wiki/Home"
+
+packager="spiky <spiky@nutyx.org>"
+contriutors="Chris Farrell"
+
+makedepends=(nasm git make-ca cmake)
+
+name=x265
+version=3.5
+
+source=(https://bitbucket.org/multicoreware/x265_git/downloads/${name}_$version.tar.gz)
+build() {
+  mkdir build
+  cd    build
+   cmake  -DCMAKE_INSTALL_PREFIX=/usr \
+   -DENABLE_STATIC=OFF  \
+   ../${name}_$version/source
+
+   make
+
+   make DESTDIR=$PKG install
+# rm $PKG/usr/lib/libx265.a
+}

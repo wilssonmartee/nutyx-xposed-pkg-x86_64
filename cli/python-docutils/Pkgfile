@@ -1,0 +1,21 @@
+description="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
+url="http://docutils.sourceforge.net"
+
+contributors="Rocket, greg, rems, tnut"
+packager="spiky <spiky@nutyx.org>"
+
+run=(python)
+
+name=python-docutils
+version=0.17.1
+release=2
+
+source=(
+https://files.pythonhosted.org/packages/4c/17/559b4d020f4b46e0287a2eddf2d8ebf76318fd3bd495f1625414b052fdc9/docutils-0.17.1.tar.gz)
+
+build() {
+
+    cd docutils-$version
+    python3 setup.py install --root=$PKG
+    
+}

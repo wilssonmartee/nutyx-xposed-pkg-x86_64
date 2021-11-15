@@ -1,0 +1,32 @@
+description="Additional Wayland protocols"
+url=" https://wayland.freedesktop.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Greg,Tnut"
+
+makedepends=(wayland)
+
+name=wayland-protocols
+version=1.23
+
+source=(https://wayland.freedesktop.org/releases/wayland-protocols-$version.tar.xz)
+
+build() {
+
+  cd $name-$version
+  mkdir build
+  cd    build
+  meson --prefix=/usr --buildtype=release
+  
+  ninja
+  DESTDIR=$PKG ninja install
+  
+}
+uptodate() {
+local url ext
+
+url="https://wayland.freedesktop.org/releases"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url.html|grep $name|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
+}

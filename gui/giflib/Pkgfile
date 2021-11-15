@@ -1,0 +1,29 @@
+description="For reading and writing GIFs as well as programs for converting and working with GIF files."
+url="http://downloads.sourceforge.net/giflib/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(xmlto)
+
+name=giflib
+version=5.2.1
+release=2
+
+source=(https://sourceforge.net/projects/giflib/files/giflib-$version.tar.gz )
+
+build() {
+cd $name-$version
+make
+make PREFIX=/usr DESTDIR=$PKG install
+
+rm -vf $PKG/usr/lib/libgif.a
+
+find doc \( -name Makefile\* -o -name \*.1 \
+         -o -name \*.xml \) -exec rm -v {} \;
+
+install -v -dm755 $PKG/usr/share/doc/giflib-$version
+cp -v -R doc/* \
+$PKG/usr/share/doc/giflib-$version
+
+}

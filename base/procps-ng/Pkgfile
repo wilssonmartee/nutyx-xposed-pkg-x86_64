@@ -1,0 +1,32 @@
+description="Utilities for monitoring your system and its processes."
+url="http://procps.sourceforge.net/"
+
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(ncurses)
+
+name=procps-ng
+version=3.3.17
+release=2
+
+PKGMK_LOCALES=()
+source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
+
+build()
+{
+cd procps-$version
+
+./configure --prefix=/usr \
+--exec-prefix= --sbindir=/usr/sbin \
+--libdir=/usr/lib --bindir=/usr/bin \
+--docdir=/usr/share/doc/procps-ng-$version \
+--disable-static \
+--disable-kill
+
+make
+make DESTDIR=$PKG install
+mkdir $PKG/lib
+mv -v $PKG/usr/lib/libprocps.so.* $PKG/lib
+ln -sf ../../lib/$(readlink $PKG/usr/lib/libprocps.so) $PKG/usr/lib/libprocps.so
+}

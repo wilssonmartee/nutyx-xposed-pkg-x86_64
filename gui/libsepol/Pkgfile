@@ -1,0 +1,14 @@
+description="SELinux binary policy manipulation library"
+url="http://userspace.selinuxproject.org"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(flex)
+name=libsepol
+version=3.3
+
+source=(https://github.com/SELinuxProject/selinux/releases/download/$version/$name-$version.tar.gz)
+build() {
+  cd ${name}-${version}
+  make
+  make DESTDIR=${PKG} LIBDIR=${PKG}/usr/lib SHLIBDIR=${PKG}/usr/lib install
+}

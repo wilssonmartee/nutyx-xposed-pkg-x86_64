@@ -1,0 +1,32 @@
+description="Library that provides a high-level interface to RDF data"
+url="http://download.librdf.org/source/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(rasqal db sqlite libiodbc)
+
+name=redland
+version=1.0.17
+release=6
+
+source=(rpath.diff
+	http://download.librdf.org/source/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+	
+./configure --prefix=/usr \
+	--disable-static
+ 
+patch -Np0 -i ../rpath.diff
+make
+
+make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/librdf.la
+rm $PKG/usr/lib/redland/librdf_storage_sqlite.la
+rm $PKG/usr/lib/redland/librdf_storage_virtuoso.la
+ 
+}

@@ -1,0 +1,35 @@
+description="A portable middleware for email access"
+url="http://www.etpan.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(libgcrypt expat cyrus-sasl gnutls zlib)
+
+name=libetpan
+version=1.9.4
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/dinhviethoa/$name/archive/$version.tar.gz)
+
+build() {
+  cd $name-$version
+  libtoolize --force --copy
+  aclocal -I m4
+  autoheader
+  autoconf
+  automake --add-missing \
+           --foreign     \
+           --force --copy
+
+  ./configure --prefix=/usr    \
+              --disable-static \
+              --disable-db \
+              --with-openssl=no \
+              --with-gnutls=yes
+  make
+  make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libetpan.la
+}

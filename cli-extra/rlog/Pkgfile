@@ -1,0 +1,21 @@
+description="A flexible message logging facility for C++ programs and libraries"
+url="http://www.arg0.net/rlog"
+
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=rlog
+version=1.4
+release=2
+
+source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/$name/$name-$version.tar.gz 
+       $name-section.patch)
+
+build () {
+
+	cd $name-$version
+	patch -Np1 -i ../$name-section.patch
+	./configure --prefix=/usr
+	make
+	make DESTDIR=$PKG install
+}

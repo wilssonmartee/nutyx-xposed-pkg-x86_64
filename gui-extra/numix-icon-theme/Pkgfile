@@ -1,0 +1,23 @@
+description="Base icon theme from the Numix project"
+url="http://numixproject.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems"
+
+makedepends=(git)
+run=(gtk-update-icon-cache)
+
+name=numix-icon-theme
+version=21.04.14
+
+source=()
+
+prepare() {
+git clone https://github.com/numixproject/numix-icon-theme.git $name
+}
+
+build() {
+cd $name
+  install -dm 755 "$PKG"/usr/share/icons
+  cp -dr --no-preserve='ownership' Numix{,-Light} "$PKG"/usr/share/icons/
+}

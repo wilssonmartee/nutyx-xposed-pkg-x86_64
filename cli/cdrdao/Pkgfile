@@ -1,0 +1,26 @@
+description="Records audio/data CD-Rs in disk-at-once (DAO) mode"
+url="http://cdrdao.sourceforge.net"
+
+contributors="Pierre, Fanch"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libvorbis libmad libao)
+
+name=cdrdao
+version=1.2.4
+release=2
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2
+        cdrdao-1.2.3-autoconf-update.patch)
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ../cdrdao-1.2.3-autoconf-update.patch
+	./configure --prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--with-lame --with-xdao \
+		--with-ogg-support --with-mp3-support
+	make
+	make DESTDIR=$PKG install
+}

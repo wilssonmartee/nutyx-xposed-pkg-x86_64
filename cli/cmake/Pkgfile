@@ -1,0 +1,28 @@
+description="A cross-platform open-source make system"
+url="http://www.cmake.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fanch,Greg,Tnut"
+
+set=(devel)
+makedepends=(ncurses expat libuv curl libarchive jsoncpp rhash)
+
+name=cmake
+version=3.21.4
+
+source=($url/files/v${version%.*}/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
+
+./bootstrap --prefix=/usr \
+--mandir=/share/man \
+--system-libs \
+--docdir=/share/doc/cmake-$version
+
+make
+
+make DESTDIR=$PKG install
+}

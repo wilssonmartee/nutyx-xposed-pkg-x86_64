@@ -1,0 +1,28 @@
+description="Perl wrappers for glib 2.x"
+url="http://gtk2-perl.sourceforge.net"
+
+makedepends=(perl-extutils-pkgconfig perl-extutils-depends)
+run=(perl glib)
+
+packager="tnut <tnut@nutyx.org>"
+
+name=perl-glib
+version=1.3291
+release=2
+
+source=(https://sourceforge.net/projects/gtk2-perl/files/Glib/$version/Glib-$version.tar.gz)
+
+build() {
+
+cd Glib-$version
+PERL_USE_UNSAFE_INC=1 \
+perl Makefile.PL INSTALLDIRS=vendor
+PERL_USE_UNSAFE_INC=1 \
+make
+make install DESTDIR=$PKG
+
+find $PKG -name .packlist -or \
+-name *.bs -or \
+-name perllocal.pod -or \
+-empty -delete
+}

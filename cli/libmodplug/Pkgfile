@@ -1,0 +1,15 @@
+description="A MOD playing library"
+url="http://modplug-xmms.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libmodplug
+version=0.8.9.0
+release=2
+
+source=( http://downloads.sourceforge.net/modplug-xmms/$name-$version.tar.gz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libmodplug.la
+}

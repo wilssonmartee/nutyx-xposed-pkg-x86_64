@@ -1,0 +1,79 @@
+description="Free version of the SSH connectivity tools"
+url="http://www.openssh.org/"
+
+contributors="Pierre,Tnut"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(openssl libedit)
+run=(shadow)
+
+name=openssh
+version=8.8p1
+
+runyx_version=20201011
+
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz)
+
+prepare() {
+groupadd -g 50 sshd
+useradd  -c 'sshd PrivSep' \
+         -d /var/lib/sshd  \
+         -g sshd           \
+         -s /bin/false     \
+         -u 50 sshd
+}
+build() {
+unset MAKEFLAGS
+cd $name-$version
+
+install -v -m700 -d $PKG/var/lib/sshd
+
+chown -v root:sys $PKG/var/lib/sshd
+
+./configure --prefix=/usr \
+--sysconfdir=/etc/ssh \
+--datadir=/usr/share/sshd \
+--with-md5-passwords \
+--with-privsep-path=/var/lib/sshd \
+--with-libedit \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info
+
+make DESTDIR=$PKG install
+
+if [ -f /etc/pam.d/login ]; then
+	mkdir -p $PKG/etc/pam.d
+	sed 's@d/login@d/sshd@g' /etc/pam.d/login > $PKG/etc/pam.d/sshd
+	chmod 644 $PKG/etc/pam.d/sshd
+fi
+
+install -v -m755 contrib/ssh-copy-id $PKG/usr/bin
+install -v -m644 contrib/ssh-copy-id.1 \
+$PKG/usr/share/man/man1
+
+install -v -m755 -d $PKG/usr/share/doc/$name-$version
+install -v -m644 INSTALL LICENCE OVERVIEW README* \
+$PKG/usr/share/doc/$name-$version
+
+# Configurations files
+mv $PKG/etc/ssh/ssh_config{,.default}
+mv $PKG/etc/ssh/sshd_config{,.default}
+
+#
+## Services
+#
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-sshd
+make DESTDIR=$PKG install-sysd-sshd
+make DESTDIR=$PKG install-runyx-sshd
+}
+service() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+etc/rc.d etc/ssh/sshd_config.default var usr/sbin etc/init lib/init \
+lib/systemd
+rm -r etc/rc.d etc/ssh/sshd_config.default var usr/sbin etc/init lib/init \
+lib/systemd
+}

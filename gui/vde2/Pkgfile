@@ -1,0 +1,32 @@
+description="Virtual Distributed Ethernet for emulators like qemu"
+url="https://sourceforge.net/projects/vde/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(python libpcap openssl)
+
+name=vde2
+version=2.3.2
+release=2
+
+source=(https://downloads.sourceforge.net/vde/$name-$version.tar.bz2
+        vde_cryptcab-compile-against-openssl-1.1.0.patch)
+
+unset MAKEFLAGS
+
+build() {
+
+	cd $name-$version
+    patch -Np1 -i ../vde_cryptcab-compile-against-openssl-1.1.0.patch
+
+	./configure --prefix=/usr \
+               --sysconfdir=/etc \
+               --sbindir=/usr/sbin \
+               --libexecdir=/usr/lib/vde2 \
+               --enable-experimental
+
+	make
+	make prefix=$PKG/usr sysconfdir=$PKG/etc sbindir=$PKG/usr/sbin libexecdir=$PKG/usr/lib/vde2 install
+
+}

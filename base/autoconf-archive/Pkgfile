@@ -1,0 +1,11 @@
+description="A collection of freely re-usable Autoconf macros"
+url="http://www.gnu.org/software/autoconf-archive/"
+
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(autoconf)
+
+name=autoconf-archive
+version=2021.02.19
+
+source=(http://ftpmirror.gnu.org/$name/$name-$version.tar.xz)

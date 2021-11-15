@@ -1,0 +1,21 @@
+description="Cross-platform asynchronous I/O"
+url="http://docs.libuv.org/en/v1.x/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Remy,Tnut"
+
+makedepends=(libtool sed automake)
+
+name=libuv
+version=1.42.0
+
+source=(https://dist.libuv.org/dist/v$version/libuv-v$version.tar.gz)
+
+build() {
+cd $name-v$version
+sh autogen.sh
+./configure --prefix=/usr --disable-static
+make
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
+}

@@ -1,0 +1,36 @@
+description="Perl Compatible Regular Expression libraries, 2nd version."
+url="http://www.pcre.org/"
+
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(bzip2 readline)
+
+name=pcre2
+version=10.37
+
+source=(https://downloads.sourceforge.net/pcre/$name-$version.tar.bz2 )
+
+build() {
+cd $name-$version
+
+[ "${CARCH}" = "x86_64" ] && export CFLAGS="${CFLAGS} -fPIC"
+
+./configure --prefix=/usr \
+--docdir=/usr/share/doc/pcre-$version \
+--enable-unicode \
+--enable-jit     \
+--enable-pcre2-16 \
+--enable-pcre2-32 \
+--enable-pcre2grep-libz \
+--enable-pcre2grep-libbz2 \
+--enable-pcre2test-libreadline \
+--disable-static
+make
+make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libpcre2-16.la
+rm $PKG/usr/lib/libpcre2-32.la
+rm $PKG/usr/lib/libpcre2-8.la
+rm $PKG/usr/lib/libpcre2-posix.la
+}

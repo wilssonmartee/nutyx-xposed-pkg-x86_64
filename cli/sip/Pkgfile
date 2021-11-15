@@ -1,0 +1,21 @@
+description="A tool that makes it easy to create Python bindings for C and C++ libraries"
+url="http://www.riverbankcomputing.co.uk/software/sip/intro"
+
+packager="spiky <spiky@nutyx.org>"
+
+run=(python)
+
+name=sip
+version=4.19.25
+release=3
+
+source=(https://www.riverbankcomputing.com/static/Downloads/sip/$version/sip-$version.tar.gz)
+
+build() {
+	cd sip-$version
+	mkdir build
+	cd build
+        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
+	make
+        make DESTDIR=$PKG install
+}

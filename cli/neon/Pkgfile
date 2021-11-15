@@ -1,0 +1,28 @@
+description="Wrapper for common HTTP and WebDAV"
+url="http://www.webdav.org/neon/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
+
+makedepends=(kerberos xmlto libxml2 expat)
+
+name=neon
+version=0.32.1
+
+source=(https://notroj.github.io/neon/$name-$version.tar.gz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--with-expat \
+--with-ssl=openssl \
+--enable-shared \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libneon.la
+}

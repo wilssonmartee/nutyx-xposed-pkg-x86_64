@@ -1,0 +1,28 @@
+description="Server and user space API to deal with multimedia pipelines"
+url="https://pipewire.org"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
+
+makedepends=(meson dbus doxygen python-docutils ffmpeg glib graphviz gstreamer
+             gstreamer-plugins-base sbc valgrind libsndfile xmltoman) 
+
+name=pipewire
+version=0.3.39
+
+source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  mkdir build
+  cd    build
+  meson --prefix=/usr      \
+    --sysconfdir=/etc      \
+    -Djack=disabled           \
+    -Dpipewire-jack=disabled  \
+    -Dvulkan=disabled         \
+    -Ddocs=enabled            \
+    -Dman=enabled ..
+  ninja
+  DESTDIR=$PKG ninja install
+}

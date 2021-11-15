@@ -1,0 +1,20 @@
+description="Python 3 compatible port of Python 2 random module"
+url="https://pypi.org/project/random2/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(python)
+
+name=python-random2
+version=1.0.1
+release=5
+
+source=(https://pypi.python.org/packages/source/r/random2/random2-$version.zip)
+
+build() {
+
+	cd random2-$version
+	python3 setup.py build
+	python3 setup.py install --root=$PKG --optimize=1 --skip-build
+}

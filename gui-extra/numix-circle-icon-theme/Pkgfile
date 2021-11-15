@@ -1,0 +1,23 @@
+description="Circle icon theme from the Numix project"
+url="http://numixproject.org/"
+
+contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(numix-icon-theme git)
+run=(gtk-update-icon-cache hicolor-icon-theme)
+
+name=numix-circle-icon-theme
+version=21.09.26
+
+source=()
+
+prepare() {
+git clone https://github.com/numixproject/numix-icon-theme-circle.git $name
+}
+
+build() {
+cd $name
+install -dm 755 "${PKG}"/usr/share/icons
+cp -dr --no-preserve='ownership' Numix-Circle{,-Light} "${PKG}"/usr/share/icons/
+}

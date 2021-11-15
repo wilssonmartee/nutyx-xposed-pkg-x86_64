@@ -1,0 +1,20 @@
+description="Compresses PNG files to a smaller size, without losing any information."
+url="http://optipng.sourceforge.net/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(glibc libpng zlib)
+
+name=optipng
+version=0.7.7
+
+source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz)
+
+
+build() {
+    cd ${name}-${version}
+    ./configure --prefix=/usr --mandir=/usr/share/man --with-system-libs
+    make
+    make prefix=$PKG/usr mandir=$PKG/usr/share/man install
+}

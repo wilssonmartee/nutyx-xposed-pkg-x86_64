@@ -1,0 +1,37 @@
+url="http://www.kohaupt-online.de/hp/"
+description="An easy to use screencast creator"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems"
+
+makedepends=(ffmpeg lame pulseaudio lsof
+             qtbase qttools qtmultimedia
+             qtx11extras xorg-libxrandr xdg-utils)
+
+name=vokoscreen
+version=3.0.9
+_version=beta
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/vkohaupt/${name}NG/archive/$version.tar.gz
+        install.pri)
+
+build() {
+
+
+# Add install instructions
+        cp install.pri ${name}NG-${version}/src/
+        echo 'include(install.pri)' >> ${name}NG-${version}/src/${name}NG.pro
+
+cd ${name}NG-$version
+mkdir -p ../build
+cd ../build
+qmake ../${name}NG-$version/src/${name}NG.pro \
+      QMAKE_CFLAGS="${CFLAGS}" \
+      QMAKE_CXXFLAGS="${CXXFLAGS}" \
+      CONFIG+=release \
+      CONFIG+=c++14
+
+make
+make INSTALL_ROOT=$PKG install
+}

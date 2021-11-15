@@ -1,0 +1,23 @@
+description="Small and modern C++ library for Filezilla" 
+url="https://lib.filezilla-project.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg, Rémy, tnut"
+
+makedepends=(gettext nettle gnutls)
+
+name=libfilezilla
+version=0.34.2
+
+source=(https://download.filezilla-project.org/libfilezilla/libfilezilla-$version.tar.bz2)
+
+build() {
+
+cd $SRC/$name-$version
+./configure --prefix=/usr \
+--disable-static
+make
+make DESTDIR=$PKG install
+# Obsolets libs
+rm $PKG/usr/lib/libfilezilla.la
+}

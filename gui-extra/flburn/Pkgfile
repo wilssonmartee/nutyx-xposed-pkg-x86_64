@@ -1,0 +1,20 @@
+description="CD/DVD burning application"
+url="http://sourceforge.net/projects/gnomebaker/"
+
+contributors="Timcowchip, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git fltk libburn libisoburn)
+
+name=flburn
+version=git
+release=3
+
+build() {
+
+	git clone git://git.code.sf.net/p/flburn/code flburn-code
+	cd flburn-code
+	make
+	
+	install -D -m755 "$name" "$PKG/usr/bin/$name"
+}

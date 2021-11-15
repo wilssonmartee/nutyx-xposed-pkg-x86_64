@@ -1,0 +1,21 @@
+description="DSP library derived from Speex"
+url="http://www.speex.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+name=speexdsp
+version=1.2.0
+
+source=(https://downloads.us.xiph.org/releases/speex/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --sysconfdir=/etc \
+            --localstatedir=/var \
+            --disable-static
+            
+  make
+  make DESTDIR=$PKG install
+}

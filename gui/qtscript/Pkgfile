@@ -1,0 +1,33 @@
+description="A cross-platform application and UI framework, QtScript files"
+url="http://qt-project.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+makedepends=(qtbase)
+
+name=qtscript
+version=5.15.2
+
+_name="${name}-everywhere-src"
+
+source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+
+prepare() {
+cd ${_name}-${version}
+sed -i 's|^asm volatile ($|asm (|' src/3rdparty/javascriptcore/JavaScriptCore/jit/JITStubs.cpp
+}
+build() {
+mkdir build
+cd    build
+qmake ../${_name}-${version}
+make
+make INSTALL_ROOT=$PKG install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+       -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Obsolets libs
+rm $PKG/usr/lib/libQt5Script.la
+rm $PKG/usr/lib/libQt5ScriptTools.la
+}

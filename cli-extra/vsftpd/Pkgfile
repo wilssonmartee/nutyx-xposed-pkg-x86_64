@@ -1,0 +1,114 @@
+description='Contains a very secure and very small FTP daemon.'
+url="https://security.appspot.com/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libnsl libcap)
+run=(pam shadow)
+
+name=vsftpd
+version=3.0.3
+release=4
+
+runyx_version=20201011
+
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	    https://security.appspot.com/downloads/$name-$version.tar.gz)
+
+prepare() {
+
+mkdir -p $PKG/{etc/pam.d,home,usr/{sbin,share/{vsftpd,man/man{5,8}}}}
+install -v -d -m 0755 $PKG/usr/share/vsftpd/empty
+install -v -d -m 0755 $PKG/home/ftp
+
+SN1="vsftpd"
+IDN1="47"
+SN2="ftp"
+IDN2="45"
+
+if ! (getent group $SN1 > /dev/null); then
+	groupadd -g $IDN1 $SN1
+fi
+if ! (getent group $SN2 > /dev/null); then
+	groupadd -g $IDN2 $SN2
+fi
+
+if ! (getent passwd $SN1 > /dev/null); then
+	useradd -c "vsftpd User" -d /dev/null -g $SN1 \
+        -s /bin/false -u $IDN1 $SN1
+fi
+if ! (getent passwd $SN2 > /dev/null); then
+	useradd -c "anonymous_user" -d /home/ftp -g $SN2 \
+        -s /bin/false -u $IDN2 $SN2
+fi
+}
+build() {
+	
+ cd $name-$version
+
+ sed -e "s/kVSFSysStrOpenUnknown;/(enum EVSFSysUtilOpenMode)&/" -i sysstr.c
+
+ make
+}
+
+package() {
+
+ cd $name-$version
+
+ install -v -m 755 vsftpd        $PKG/usr/sbin/vsftpd
+ install -v -m 644 vsftpd.8      $PKG/usr/share/man/man8
+ install -v -m 644 vsftpd.conf.5 $PKG/usr/share/man/man5
+ install -v -m 644 vsftpd.conf   $PKG/etc/vsftpd.conf.example
+ cat >> $PKG/etc/vsftpd.conf.example << "EOF"
+#
+# It is now recommended to run vsftpd in standalone mode.
+# Also, you should specify the privilege separation user created above.
+# Finally, you should specify the chroot directory.
+# man vsftpd.conf will give you all the details.
+background=YES
+listen=YES
+nopriv_user=vsftpd
+secure_chroot_dir=/usr/share/vsftpd/empty
+
+# vsftpd daemon uses seccomp to improve security by default.
+# But it's known to cause vsftpd unable to handle ftp LIST
+# command with recent kernel versions.
+seccomp_sandbox=NO
+
+# To enable local logins
+local_enable=YES
+
+# PAM session support
+session_support=YES
+pam_service_name=vsftpd
+EOF
+  cat > $PKG/etc/pam.d/vsftpd << "EOF"
+# Begin /etc/pam.d/vsftpd
+auth       required     /lib/security/pam_listfile.so item=user sense=deny \
+                                                      file=/etc/ftpusers \
+                                                      onerr=succeed
+auth       required     pam_shells.so
+auth       include      system-auth
+account    include      system-account
+session    include      system-session
+EOF
+
+  cat >> /etc/vsftpd.conf << "EOF"
+session_support=YES
+pam_service_name=vsftpd
+EOF
+
+ # Service
+ cd $SRC/runyx-${runyx_version}
+ make DESTDIR=$PKG install-sysv-vsftpd
+ make DESTDIR=$PKG install-sysd-vsftpd
+ make DESTDIR=$PKG install-runyx-vsftpd
+}
+service() {
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/{systemd,init} etc/{init,rc.d}
+
+rm -r etc/{rc.d,init}
+rm -r lib/{init,systemd}
+}

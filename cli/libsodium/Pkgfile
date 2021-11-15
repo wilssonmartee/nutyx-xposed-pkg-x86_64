@@ -1,0 +1,23 @@
+description="P(ortable|ackageable) NaCl-based crypto library"
+url="https://github.com/jedisct1/libsodium"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=libsodium
+version=1.0.18
+
+source=(https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
+)
+
+package() {
+rm $PKG/usr/lib/libsodium.la
+}
+
+uptodate() {
+local url ext
+url="https://download.$name.org/$name/releases/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}

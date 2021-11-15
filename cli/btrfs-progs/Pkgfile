@@ -1,0 +1,31 @@
+description="Btrfs filesystem utilities"
+url="http://btrfs.wiki.kernel.org/"
+
+contributors="Alienus, spiky"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(e2fsprogs lzo util-linux zlib)
+
+name=btrfs-progs
+version=5.15
+
+source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz)
+
+build(){
+cd $name-v$version
+./configure \
+--prefix=/usr \
+--libdir=/lib \
+--bindir=/sbin \
+ --disable-zstd \
+--disable-documentation \
+--disable-python
+make
+make DESTDIR=$PKG install
+
+# Binaries should be available in case of mounting /usr
+mkdir -p $PKG/{sbin,usr/lib}
+ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfs.so) $PKG/usr/lib/libbtrfs.so
+ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfsutil.so) $PKG/usr/lib/libbtrfsutil.so
+rm -v $PKG/lib/libbtrfs.{a,so} $PKG//lib/libbtrfsutil.{a,so}
+}

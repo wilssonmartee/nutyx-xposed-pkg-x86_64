@@ -1,0 +1,16 @@
+description="The linux kernel firmware set of files. More and more hardware requires this package"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=linux-firmware
+version=20210818
+
+unset MAKEFLAGS
+
+PKGMK_NO_STRIP="yes"
+source=(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$version.tar.gz)
+
+build() {
+cd $name-$version
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
+}

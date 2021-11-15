@@ -1,0 +1,34 @@
+description="GStreamer Multimedia Framework Bad Plugins"
+url="http://gstreamer.freedesktop.org/modules/gst-plugins-base.html"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
+
+makedepends=(meson ninja gstreamer-plugins-base libdvdread libdvdnav
+             faac faad2 libexif libmpeg2 mpg123)
+
+name=gstreamer-plugins-bad
+version=1.18.5
+
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
+
+build() {
+cd gst-plugins*
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+-Dbuildtype=release \
+-Dpackage-name="Gstreamer Bad Plugins $version NuTyX" \
+-Dpackage-origin="http://downloads.nutyx.org/"
+ninja
+DESTDIR=$PKG ninja install
+}
+uptodate() {
+local url ext
+name=gst-plugins-bad
+url="https://gstreamer.freedesktop.org/src/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}

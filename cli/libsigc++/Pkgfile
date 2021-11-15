@@ -1,0 +1,24 @@
+description="The libsigc++ package implements a typesafe callback system for standard C++."
+url="http://libsigc.sourceforge.net/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
+
+makedepends=(meson ninja python)
+
+name=libsigc++
+version=2.10.7
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build=meson
+
+uptodate(){
+local latest lastversion url
+url="https://download.gnome.org/sources/$name"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}

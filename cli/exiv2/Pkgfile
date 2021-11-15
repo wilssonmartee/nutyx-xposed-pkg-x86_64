@@ -1,0 +1,25 @@
+description="Exif and Iptc metadata manipulation library and tools"
+url="http://www.exiv2.org/index.html"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
+
+name=exiv2
+version=0.27.5
+makedepends=(cmake)
+source=(http://www.exiv2.org/builds/$name-$version-Source.tar.gz)
+
+build() {
+cd $name-$version-Source
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DEXIV2_ENABLE_VIDEO=yes     \
+      -DEXIV2_ENABLE_WEBREADY=yes  \
+      -DEXIV2_ENABLE_CURL=yes      \
+      -DEXIV2_BUILD_SAMPLES=no     \
+      -G "Unix Makefiles" ..
+
+make
+make DESTDIR=$PKG install
+}

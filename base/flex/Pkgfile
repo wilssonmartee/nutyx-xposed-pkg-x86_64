@@ -1,0 +1,33 @@
+description="A tool for generating text-scanning programs"
+url="http://flex.sourceforge.net"
+
+maintainer="Will Estes,John Millaway,Aaron Stone,Vern Paxson,Van Jacobson,Jef Poskanzer,Kevin Gong,Vern Paxson"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(m4)
+
+name=flex
+version=2.6.4
+release=3
+
+set=(devel)
+
+PKGMK_LOCALES=()
+source=(https://github.com/westes/flex/releases/download/v${version}/flex-$version.tar.gz)
+build()
+{
+cd flex-$version
+
+./configure --prefix=/usr \
+--docdir=/usr/share/doc/flex-$version
+
+make
+make -k check||true
+
+make DESTDIR=$PKG install
+
+ln -sv flex $PKG/usr/bin/lex
+
+}

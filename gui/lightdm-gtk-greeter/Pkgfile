@@ -1,0 +1,47 @@
+description="Gtk greeter for lightdm"
+url="https://en.wikipedia.org/wiki/LightDM"
+
+packager="tnut <tnut@nutyx.org>"
+contributor="Rems, Dania"
+
+set=(lightdm)
+
+makedepends=(autoconf automake m4 xfce4-dev-tools
+             lightdm exo gobject-introspection)
+
+
+name=lightdm-gtk-greeter
+version=2.0.8
+
+makedepends=(lightdm exo gobject-introspection)
+
+source=(https://github.com/Xubuntu/lightdm-gtk-greeter/archive/lightdm-gtk-greeter-$version.tar.gz)
+
+prepare() {
+mv $name-$name-$version $name-$version
+cd $name-$version
+NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+
+cd $name-$version
+CFLAGS+=" -Wno-declaration-after-statement \
+-Wno-error=deprecated-declarations"
+./configure \
+--prefix=/usr \
+--libexecdir=/usr/lib/lightdm \
+--sbindir=/usr/bin \
+--sysconfdir=/etc \
+--with-libxklavier \
+--enable-kill-on-sigterm \
+--disable-libido \
+--disable-libindicator \
+--disable-static \
+--docdir=/usr/share/doc/lightdm-gtk-greeter-$version
+
+make
+make DESTDIR=$PKG install
+sed -i "s@#background=@background=/usr/share/backgrounds/nutyx/nutyx.jpg@" \
+$PKG/etc/lightdm/lightdm-gtk-greeter.conf
+}

@@ -1,0 +1,73 @@
+description="HTTP and reverse proxy, mail proxy, and a generic TCP/UDP proxy server"
+url="http://nginx.org/en/"
+
+packager="spiky <spiky@nutyx.org>"
+maintainer="http://hg.nginx.org/nginx"
+
+makedepends=(openssl pcre)
+PKGMK_GROUPS=(man)
+
+name=nginx
+version=1.21.3
+runyx_version=20201011
+
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+        https://nginx.org/download/nginx-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure \
+--with-openssl=/usr/include/openssl \
+--conf-path=/etc/nginx/nginx.conf \
+--pid-path=/var/run/nginx.pid \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--prefix=/usr \
+--modules-path=/usr/lib/nginx/modules \
+--http-scgi-temp-path=/usr/lib/nginx/scgi \
+--http-uwsgi-temp-path=/usr/lib/nginx/uwsgi \
+--http-proxy-temp-path=/usr/lib/nginx/proxy \
+--http-client-body-temp-path=/usr/lib/nginx/client-body \
+--user=http --group=http
+make
+make DESTDIR=$PKG install
+install -d $PKG{/srv/www,/usr/{lib/nginx,share/man/man8}}
+
+# Configuration file
+sed -e '44s|html|/srv/www|' \
+    -e '54s|html|/srv/www|' \
+    -i $PKG/etc/nginx/nginx.conf.default
+rm  $PKG/etc/nginx/nginx.conf
+cp -a html $PKG/etc/nginx
+
+# Man pages
+install -m644 objs/nginx.8 $PKG/usr/share/man/man8/nginx.8
+
+# Service
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-nginx
+make DESTDIR=$PKG install-sysd-nginx
+make DESTDIR=$PKG install-runyx-nginx
+}
+
+prepare() {
+
+UN=apache
+(getent passwd $UN > /dev/null) && userdel $UN
+(getent group $UN   > /dev/null) && groupdel $UN
+
+UN=www
+(getent passwd $UN > /dev/null) && userdel $UN
+(getent group $UN   > /dev/null) && groupdel $UN
+
+UN=http
+
+if ! (getent group $UN > /dev/null); then
+  groupadd -g 25 $UN
+fi
+if ! (getent passwd $UN > /dev/null); then
+ useradd  -c "http Server" -d /dev/null \
+ -g $UN -s /bin/false -u 25 $UN
+fi
+
+}

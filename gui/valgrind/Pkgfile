@@ -1,0 +1,24 @@
+description="An instrumentation framework for building dynamic analysis tools." 
+url="http://valgrind.org"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, Greg, tnut"
+
+makedepends=(boost llvm gdb libxslt)
+
+name=valgrind
+version=3.17.0
+
+source=(ftp://sourceware.org/pub/$name/$name-$version.tar.bz2)
+
+build() {
+
+	cd $name-$version
+	sed -i 's|/doc/valgrind||' docs/Makefile.in 
+	./configure --prefix=/usr \
+            --datadir=/usr/share/doc/$name-$version
+            
+	make
+	make DESTDIR=$PKG install
+	
+}

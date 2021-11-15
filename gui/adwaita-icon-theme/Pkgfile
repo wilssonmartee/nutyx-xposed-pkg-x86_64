@@ -1,0 +1,23 @@
+description="Adwaita icon theme."
+url="http://www.gnome.org/"
+
+maintainer="http://linuxfromscratch.org/"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(intltool)
+run=(hicolor-icon-theme gtk-update-icon-cache icon-naming-utils librsvg)
+
+name=adwaita-icon-theme
+version=41.0
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+uptodate(){
+local latest lastversion url
+url="https://download.gnome.org/sources/$name"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f5`"
+echo "$lastversion"
+}

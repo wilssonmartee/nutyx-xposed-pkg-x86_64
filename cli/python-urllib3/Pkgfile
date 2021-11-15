@@ -1,0 +1,17 @@
+description="HTTP library with thread-safe connection pooling and file post support"
+url="https://pypi.org/project/urllib3/#description"
+
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(python)
+
+name=python-urllib3
+version=1.26.7
+release=2
+
+_name=urllib3
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/shazow/urllib3/archive/$version.tar.gz)
+
+build=python3

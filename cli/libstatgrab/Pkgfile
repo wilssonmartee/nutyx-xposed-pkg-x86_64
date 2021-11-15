@@ -1,0 +1,22 @@
+description="Cross platform access to statistics about the system on which it's run."
+url="http://www.mirrorservice.org/sites/ftp.i-scream.org/pub/i-scream/libstatgrab"
+
+contributors="Berlius,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
+
+name=libstatgrab
+version=0.92.1
+
+source=(http://www.mirrorservice.org/sites/ftp.i-scream.org/pub/i-scream/libstatgrab/$name-$version.tar.gz)
+
+build () {
+cd $name-$version
+./configure --prefix=/usr  \
+--disable-static \
+--docdir=/usr/share/doc/libstatgrab-$version                
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libstatgrab.la
+}

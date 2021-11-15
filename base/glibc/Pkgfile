@@ -1,0 +1,110 @@
+description="The Glibc package contains the main C library."
+url="https://www.gnu.org/software/libc/"
+
+packager="tnut <tnut@nutyx.org>"
+kernelversion=5.13
+
+makedepends=(python bison grep)
+
+name=glibc
+version=2.34
+release=2
+
+PKGMK_LOCALES=()
+source=(https://www.kernel.org/pub/linux/kernel/v5.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
+	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
+	 glibc.locales.supported )
+
+build() {
+
+# Headers
+cd linux-$kernelversion
+make mrproper
+make headers
+find usr/include -name '.*' -delete
+rm usr/include/Makefile
+mkdir -p $PKG/usr/include
+cp -rv usr/include/* $PKG/usr/include
+
+cd ../glibc-$version
+
+sed -e '/NOTIFY_REMOVED)/s/)/ \&\& data.attr != NULL)/' \
+    -i sysdeps/unix/sysv/linux/mq_notify.c
+
+patch -Np1 -i ../glibc-$version-fhs-1.patch
+
+mkdir $PKG/lib64
+
+ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
+ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
+
+mkdir -v build
+cd       build
+
+../configure --prefix=/usr                                    \
+--with-bugurl=https://github.com/NuTyX/packages-x86_64/issues \
+--disable-werror                \
+--enable-kernel=3.2             \
+--with-headers=/usr/include     \
+--enable-stack-protector=strong \
+libc_cv_slibdir=/lib
+
+make || make -j1
+
+# make -k check 2>&1 | tee glibc-check-log
+# grep Error glibc-check-log
+
+make install_root=$PKG install
+
+mkdir -p $PKG/etc
+cp -v ../nscd/nscd.conf $PKG/etc/nscd.conf
+mkdir -pv $PKG/var/cache/nscd
+
+touch $PKG/etc/ld.so.conf
+
+mkdir -pv $PKG/usr/lib/locale
+
+cp $SRC/glibc.locales.supported \
+../localedata/SUPPORTED
+
+make install_root=$PKG localedata/install-locales
+
+cat > $PKG/etc/nsswitch.conf << "EOF"
+# Begin /etc/nsswitch.conf
+
+passwd: files
+group: files
+shadow: files
+
+hosts: files dns
+networks: files
+
+protocols: files
+services: files
+ethers: files
+rpc: files
+
+# End /etc/nsswitch.conf
+EOF
+
+
+cat > $PKG/etc/ld.so.conf << "EOF"
+# Begin /etc/ld.so.conf
+/usr/local/lib
+/opt/lib
+
+# Add an include directory
+include /etc/ld.so.conf.d/*.conf
+# End of  /etc/ld.so.conf
+EOF
+
+mkdir $PKG/etc/ld.so.conf.d
+}
+devel() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/include
+rm -r usr/include
+}
