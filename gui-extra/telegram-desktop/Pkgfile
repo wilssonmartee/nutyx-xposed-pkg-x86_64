@@ -1,7 +1,7 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="wilsson <wilssonm@gmail.com>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Fabienwang,Spiki,Tnut"
 
 makedepends=(cmake ninja python qtsvg qtwayland qtimageformats
@@ -11,7 +11,7 @@ run=(desktop-file-utils ttf-opensans qtimageformats)
 alias=(telegram)
 
 name=telegram-desktop
-version=3.2.2
+version=3.2.5
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
