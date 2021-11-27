@@ -1,0 +1,17 @@
+description="A terminal based graphical activity monitor inspired by gtop and vtop"
+url="https://github.com/xxxserxxx/gotop"
+
+contributors="Wilsson M"
+packager="Wilsson Martee <wilssonm@gmail.com>"
+run=(glibc)
+
+name=gotop
+version=4.1.2
+release=1
+
+source=($url/releases/download/v${version}/${name}_v${version}_linux_amd64.tgz)
+
+build() {
+	install -Dm755 "gotop" "$PKG/usr/bin/gotop"
+}
+
