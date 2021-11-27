@@ -1,3 +1,3 @@
 #!/bin/bash
 
-xposed_pkgs=(cli-extra/opendoas file)
+xposed_pkgs=(cli-extra/opendoas)
