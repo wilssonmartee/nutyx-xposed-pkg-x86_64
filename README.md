@@ -1,4 +1,4 @@
-## NuTyX (Xposed)
+## NuTyX
 
 **ENGLISH** [NuTyX](http://www.nutyx.org) is a GNU/Linux distribution for multiple architectures inspired by the online 
 documentation [Linux From Scratch (LFS)](http://www.linuxfromscratch.org).
@@ -17,3 +17,8 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 Have fun :)
 
 ---
+
+## NuTyX (Xposed)
+**ENGLISH** Nutyx Xposed is a remake of the original Nutyx, but with a different version control, in such a way that the packages most essential for the system are constantly updated but not so fast as to be unstable, while the packages with less risk are Updated almost instantly, which makes Nutyx Xposed always up-to-date and stable.
+
+### --- Project in process ---
