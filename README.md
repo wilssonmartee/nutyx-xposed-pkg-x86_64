@@ -17,11 +17,17 @@ Para iniciar la instalación el liveiso o el S.O anfitrión debe contar con:
 * libarchive (bsdtar) - Ubuntu 18.10 o superior no cuenta con bsdtar
 
 Pasos:
+
 ***1.*** Formatear y preparar las particiones para la instalación
+
 ***2.*** Montar particiones, root debe ser montada en **/mnt/hd**
+
 ***3.*** Cambiar a bash como intérprete de comandos (# /bin/bash)
+
 ***4.*** wget http://nutyx-xposed.ddns.net/install-nutyx
+
 ***5.*** chmod +x install-nutyx
+
 ***6.*** ISO=BASE ./install-nutyx -t
 
 Mostrará una lista de variables y opciones disponibles
@@ -65,14 +71,14 @@ Finalizada la instalación podemos utilizar el gestor de arranque de una instala
 
 ***8.*** ./install-nutyx -ec
 
-Podria servirte: [Gestionar paquetes con cards.](http://nutyx.org/en/?page=base-commands#5)
+*Podria servirte: [Gestionar paquetes con cards.](http://nutyx.org/en/?page=base-commands#5)*
 
-Podria servirte: [Configurando GRUB en NuTyX.](http://nutyx.org/en/grub-install)
+*Podria servirte: [Configurando GRUB en NuTyX.](http://nutyx.org/en/grub-install)*
 
-Podria servirte: [Configurar GRUB.](https://wiki.archlinux.org/title/GRUB)
+*Podria servirte: [Configurar GRUB.](https://wiki.archlinux.org/title/GRUB)*
 
 
-***9.*** Generar fstab (opcional) [Genfstab.](https://github.com/glacion/genfstab)
+***9.*** Generar fstab *(opcional)* [Genfstab.](https://github.com/glacion/genfstab)
 
 Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero es compatible con Systemd y Runyx.
 
