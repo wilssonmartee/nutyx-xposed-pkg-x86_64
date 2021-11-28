@@ -23,23 +23,37 @@ Pasos:
 4. wget http://nutyx-xposed.ddns.net/install-nutyx
 5. chmod +x install-nutyx
 6. ISO=BASE ./install-nutyx -t
+
 Mostrará una lista de variables y opciones disponibles
 Posibles opciones para la variable ISO:
+
 STRICT, BASE, CLI, GUI, GUI_EXTRA, XORG, GNOME, GNOME_EXTRA, KDE5, KDE5_EXTRA, OPENBOX, JWM, LXDE, XFCE4, MATE. 
 Cada variable indica el conjunto de paquetes que se instalarán siguendo el siguiente orden jerarquico.
 
 STRICT ->	STRICT
+
 MINI -> 	STRICT + MINI
+
 BASE -> 	STRICT + BASE
+
 CLI ->  	STRICT + BASE + CLI
+
 GUI ->  	STRICT + BASE + CLI + GUI
+
 XORG ->  	STRICT + BASE + CLI + GUI + XORG
+
 JWM ->  	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + JWM
+
 OPENBOX -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + OPENBOX
+
 LXDE -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + LXDE
+
 XFCE4 -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + XFCE4
+
 MATE -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + MATE
+
 GNOME -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + GNOME + GNOME_EXTRA
+
 KDE5 -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + KDE5 + KDE5_EXTRA 
 
 Es decir que al definir ISO=XORG se instalarán los paquetes del conjunto STRICT + BASE + CLI + GUI + XORG
@@ -65,6 +79,7 @@ Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero 
 2. Iniciar instalación
 3. Reiniciar sistema y configurar datos post-instalación
 4. Configurar las variables "version" y "url" dentro de /etc/cards.conf
+
 	**version xposed**
 	**url http://nutyx-xposed.ddns.net**
 5. cards sync
