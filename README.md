@@ -95,9 +95,9 @@ Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero 
 
 ***4.*** Configurar las variables "version" y "url" dentro de /etc/cards.conf
 
-	**version xposed**
+	version xposed
 
-	**url http://nutyx-xposed.ddns.net**
+	url http://nutyx-xposed.ddns.net
 
 ***5.*** cards sync
 ***6.*** cards upgrade
