@@ -100,4 +100,5 @@ Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero 
 	url http://nutyx-xposed.ddns.net
 
 ***5.*** cards sync
+
 ***6.*** cards upgrade
