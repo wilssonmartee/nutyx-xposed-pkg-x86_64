@@ -66,8 +66,11 @@ Finalizada la instalación podemos utilizar el gestor de arranque de una instala
 8. ./install-nutyx -ec
 
 Podria servirte: [Gestionar paquetes con cards.](http://nutyx.org/en/?page=base-commands#5)
+
 Podria servirte: [Configurando GRUB en NuTyX.](http://nutyx.org/en/grub-install)
+
 Podria servirte: [Configurar GRUB.](https://wiki.archlinux.org/title/GRUB_(Espa%C3%B1ol)
+
 
 9. Generar fstab (opcional) [Genfstab.](https://github.com/glacion/genfstab)
 
@@ -81,6 +84,7 @@ Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero 
 4. Configurar las variables "version" y "url" dentro de /etc/cards.conf
 
 	**version xposed**
+
 	**url http://nutyx-xposed.ddns.net**
 5. cards sync
 6. cards upgrade
