@@ -30,7 +30,8 @@ Pasos:
 
 ***6.*** ISO=BASE ./install-nutyx -t
 
-Mostrará una lista de variables y opciones disponibles
+Mostrará una lista de variables y opciones disponibles.
+
 Posibles opciones para la variable ISO:
 
 STRICT, BASE, CLI, GUI, GUI_EXTRA, XORG, GNOME, GNOME_EXTRA, KDE5, KDE5_EXTRA, OPENBOX, JWM, LXDE, XFCE4, MATE. 
@@ -82,15 +83,21 @@ Finalizada la instalación podemos utilizar el gestor de arranque de una instala
 
 Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero es compatible con Systemd y Runyx.
 
+---
+
 ### Instalación para nuevos usuarios
 
-1. Descargar y bootear NuTyX .iso
-2. Iniciar instalación
-3. Reiniciar sistema y configurar datos post-instalación
-4. Configurar las variables "version" y "url" dentro de /etc/cards.conf
+***1.*** Descargar y bootear [NuTyX.iso](http://nutyx.org/en/downloads#2)
+
+***2.*** Iniciar instalación
+
+***3.*** Reiniciar sistema y configurar datos post-instalación
+
+***4.*** Configurar las variables "version" y "url" dentro de /etc/cards.conf
 
 	**version xposed**
 
 	**url http://nutyx-xposed.ddns.net**
-5. cards sync
-6. cards upgrade
+
+***5.*** cards sync
+***6.*** cards upgrade
