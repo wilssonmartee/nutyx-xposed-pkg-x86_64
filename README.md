@@ -17,12 +17,12 @@ Para iniciar la instalación el liveiso o el S.O anfitrión debe contar con:
 * libarchive (bsdtar) - Ubuntu 18.10 o superior no cuenta con bsdtar
 
 Pasos:
-1. Formatear y preparar las particiones para la instalación
-2. Montar particiones, root debe ser montada en **/mnt/hd**
-3. Cambiar a bash como intérprete de comandos (# /bin/bash)
-4. wget http://nutyx-xposed.ddns.net/install-nutyx
-5. chmod +x install-nutyx
-6. ISO=BASE ./install-nutyx -t
+***1.*** Formatear y preparar las particiones para la instalación
+***2.*** Montar particiones, root debe ser montada en **/mnt/hd**
+***3.*** Cambiar a bash como intérprete de comandos (# /bin/bash)
+***4.*** wget http://nutyx-xposed.ddns.net/install-nutyx
+***5.*** chmod +x install-nutyx
+***6.*** ISO=BASE ./install-nutyx -t
 
 Mostrará una lista de variables y opciones disponibles
 Posibles opciones para la variable ISO:
@@ -30,49 +30,49 @@ Posibles opciones para la variable ISO:
 STRICT, BASE, CLI, GUI, GUI_EXTRA, XORG, GNOME, GNOME_EXTRA, KDE5, KDE5_EXTRA, OPENBOX, JWM, LXDE, XFCE4, MATE. 
 Cada variable indica el conjunto de paquetes que se instalarán siguendo el siguiente orden jerarquico.
 
-STRICT ->	STRICT
+**STRICT** ->	STRICT
 
-MINI -> 	STRICT + MINI
+**MINI** -> 	STRICT + MINI
 
-BASE -> 	STRICT + BASE
+**BASE** -> 	STRICT + BASE
 
-CLI ->  	STRICT + BASE + CLI
+**CLI** ->  	STRICT + BASE + CLI
 
-GUI ->  	STRICT + BASE + CLI + GUI
+**GUI** ->  	STRICT + BASE + CLI + GUI
 
-XORG ->  	STRICT + BASE + CLI + GUI + XORG
+**XORG** ->  	STRICT + BASE + CLI + GUI + XORG
 
-JWM ->  	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + JWM
+**JWM** ->  	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + JWM
 
-OPENBOX -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + OPENBOX
+**OPENBOX** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + OPENBOX
 
-LXDE -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + LXDE
+**LXDE** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + LXDE
 
-XFCE4 -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + XFCE4
+**XFCE4** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + XFCE4
 
-MATE -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + MATE
+**MATE** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + MATE
 
-GNOME -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + GNOME + GNOME_EXTRA
+**GNOME** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + GNOME + GNOME_EXTRA
 
-KDE5 -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + KDE5 + KDE5_EXTRA 
+**KDE5** -> 	STRICT + BASE + CLI + GUI + GUI_EXTRA + XORG + KDE5 + KDE5_EXTRA 
 
 Es decir que al definir ISO=XORG se instalarán los paquetes del conjunto STRICT + BASE + CLI + GUI + XORG
-Una vez aclarado esto podemos proseguir con la instalación siguiendo el paso 6 sin el flag "-t"
+Una vez aclarado esto podemos proseguir con la instalación siguiendo el paso *6* sin el flag "-t"
 
-7. ISO=XORG ./install-nutyx
+***7.*** ISO=XORG ./install-nutyx
 
 Finalizada la instalación podemos utilizar el gestor de arranque de una instalación previa existente o instalar/configurar grub en la nueva instalación de NuTyX mediante **chroot**:
 
-8. ./install-nutyx -ec
+***8.*** ./install-nutyx -ec
 
 Podria servirte: [Gestionar paquetes con cards.](http://nutyx.org/en/?page=base-commands#5)
 
 Podria servirte: [Configurando GRUB en NuTyX.](http://nutyx.org/en/grub-install)
 
-Podria servirte: [Configurar GRUB.](https://wiki.archlinux.org/title/GRUB_(Espa%C3%B1ol)
+Podria servirte: [Configurar GRUB.](https://wiki.archlinux.org/title/GRUB)
 
 
-9. Generar fstab (opcional) [Genfstab.](https://github.com/glacion/genfstab)
+***9.*** Generar fstab (opcional) [Genfstab.](https://github.com/glacion/genfstab)
 
 Por defecto, NuTyX Xposed utiliza [SysVinit](http://nutyx.org/en/sysvinit) pero es compatible con Systemd y Runyx.
 
