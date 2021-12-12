@@ -78,7 +78,7 @@ Cada variable indica el conjunto de paquetes que se instalarán siguendo el sigu
 Es decir que al definir STAGE=XORG se instalarán los paquetes del conjunto STRICT + BASE + CLI + GUI + XORG
 Una vez aclarado esto podemos proseguir con la instalación.
 
-***5.*** sudo ISO=XORG ./install-nutyx
+***5.*** sudo STAGE=xorg ./install-nutyx
 
 Finalizada la instalación podemos utilizar el gestor de arranque de una instalación previa existente o instalar/configurar grub en la nueva instalación de NuTyX mediante **chroot**:
 
