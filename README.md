@@ -28,12 +28,6 @@ Para iniciar la instalación el liveiso o el S.O anfitrión debe contar con:
 
 ***3.*** Utilizar *bash* como intérprete de comandos (# /bin/bash)
 
-#### Desde NuTyX-Xposed Liveiso:
-
-***4.*** STAGE=base install-nutyx -t
-
-#### Desde otras distribuciones Linux:
-
 ***4.*** curl -O http://nutyx-xposed.ddns.net/install-nutyx
 
 ***4-1.*** chmod +x install-nutyx
@@ -78,11 +72,11 @@ Cada variable indica el conjunto de paquetes que se instalarán siguendo el sigu
 Es decir que al definir STAGE=XORG se instalarán los paquetes del conjunto STRICT + BASE + CLI + GUI + XORG
 Una vez aclarado esto podemos proseguir con la instalación.
 
-***5.*** sudo STAGE=xorg ./install-nutyx
+***5.*** sudo STAGE=XORG ./install-nutyx
 
 Finalizada la instalación podemos utilizar el gestor de arranque de una instalación previa existente o instalar/configurar grub en la nueva instalación de NuTyX mediante **chroot**:
 
-***6.*** ./install-nutyx -ec
+***6.*** sudo ./install-nutyx -ec
 
 *Podria servirte: [Gestionar paquetes con cards.](http://nutyx.org/en/?page=base-commands#5)*
 
