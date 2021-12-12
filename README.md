@@ -16,9 +16,10 @@ Para iniciar la instalación el liveiso o el S.O anfitrión debe contar con:
 * curl
 * libarchive (bsdtar) - Ubuntu 18.10 o superior no cuenta con bsdtar
 
-Descargar NuTyX-Xposed Liveiso: http://nutyx-xposed.ddns.net/download
+*->Descargar NuTyX-Xposed Liveiso: http://nutyx-xposed.ddns.net/download*
 
-Pasos:
+**Pasos:**
+
 ***1.*** Bootear liveiso del sistema anfitrion. *Recomendado: [Descargar Nutyx-Xposed Liveiso.](http://nutyx.org/en/?page=base-commands#5)*
 
 ***2.*** Formatear y preparar las particiones para la instalación
@@ -27,11 +28,11 @@ Pasos:
 
 ***3.*** Utilizar *bash* como intérprete de comandos (# /bin/bash)
 
-#### Desde NuTyX-Xposed Liveiso
+#### Desde NuTyX-Xposed Liveiso:
 
 ***4.*** STAGE=base install-nutyx -t
 
-#### Desde otras distribuciones Linux
+#### Desde otras distribuciones Linux:
 
 ***4.*** curl -O http://nutyx-xposed.ddns.net/install-nutyx
 
