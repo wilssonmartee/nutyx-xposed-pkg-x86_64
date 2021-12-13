@@ -20,7 +20,7 @@ Para iniciar la instalación el liveiso o el S.O anfitrión debe contar con:
 
 **Pasos:**
 
-***1.*** Bootear liveiso del sistema anfitrion. *Recomendado: [Descargar Nutyx-Xposed Liveiso.](http://nutyx.org/en/?page=base-commands#5)*
+***1.*** Bootear liveiso del sistema anfitrion. *Recomendado: [Descargar Nutyx-Xposed Liveiso.](http://nutyx-xposed.ddns.net/download)*
 
 ***2.*** Formatear y preparar las particiones para la instalación
 
