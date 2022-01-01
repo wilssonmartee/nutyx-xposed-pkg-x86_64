@@ -3,8 +3,9 @@ url="https://www.nvidia.com"
 
 packager="tnut <tnut@nutyx.org>"
 
+name=nvidia-470-kernel
 version=470.86
-release=3
+release=5
 
 run=(kernel)
 
