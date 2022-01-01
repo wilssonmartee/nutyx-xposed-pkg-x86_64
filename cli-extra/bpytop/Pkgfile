@@ -7,7 +7,7 @@ packager="Wilsson Martee <wilssonm@gmail.com>"
 makedepends=(python python-psutil)
 run=(python python-psutil)
 name=bpytop
-version=1.0.67
+version=1.0.68
 release=1
 
 source=($url/archive/v$version.tar.gz)
