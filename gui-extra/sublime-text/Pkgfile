@@ -2,13 +2,13 @@
 description="A sophisticated text editor for code, markup and prose"
 url="https://www.sublimetext.com/"
 
-packager="spiky <spiky@nutyx.org>"
+packager="WilssonMartee <wilssonm@gmail.com>"
 contributors="Hugo,Sundev79"
 
 makedepends=(libpng gtk2)
 run=(python)
 name=sublime-text
-version=4121
+version=4126
 
 source=(https://download.sublimetext.com/sublime_text_build_${version}_x64.tar.xz)
 
