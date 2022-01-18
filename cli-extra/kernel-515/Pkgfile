@@ -1,19 +1,18 @@
 url="https://www.kernel.org"
-description="The 5.10 longterm support Linux Kernel version"
+description="The 5.15 longterm support Linux Kernel version"
 
 packager="tnut <tnut@nutyx.org>"
-
-makedepends=(bison flex perl)
+makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
-name=kernel-510
-version=5.10.90
+name=kernel-515
+version=5.15.15
 
-alias=(linux-5.10)
+alias=(linux-515)
 INITRD="initrd-${name/*-/}"
 KERNEL=${name/-*/}
 
@@ -25,8 +24,7 @@ _version=${version:0:4}
 ## Download all the sources
 #
 
-source=(fix_virtualbox.patch
-	$url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
+source=($url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -41,8 +39,6 @@ cd linux-${_version}
 if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
-
-patch -Np1 -i ../fix_virtualbox.patch
 
 make mrproper
 cp $SRC/config_64 ./.config
@@ -74,7 +70,8 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/$KERNEL-${KERNEL_VERSION}
+$PKG/boot/$KERNEL
+ln -sf $KERNEL $PKG/boot/${name}-stable
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -95,38 +92,24 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo "LK=\".\"
-[ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
-if [ \"\$(dirname \$LK)\" != \".\" ]; then
-  echo \"This is an obsolet efi installation\"
-  ln -sf \$LK boot/$name
-  if [ -f boot/\$LK ]; then
-    mv boot/$KERNEL-${KERNEL_VERSION} boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/$KERNEL-${KERNEL_VERSION}
-  else
-    echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
-  fi
-else
-  if [ -L boot/$INITRD ]; then
+echo "if [ -L boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
+    rm boot/$(readlink boot/$INITRD)
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
-  fi
-  ln -sf $KERNEL-${KERNEL_VERSION} boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
+
 
 }
 devel() {
 
 cd $PKG
-rm -r usr/src/linux-${_version}/{block,fs,ipc,init,drivers,mm,net,samples,security,sound,virt}
+rm -r usr/src/linux-${_version}/{block,drivers,fs,ipc,init,net,mm,samples,security,sound,virt}
 find  usr/src/linux-${_version}/ -type f -name "*.o"  \
 -o -name "*.ko" -o -name "*.cmd" -o -name "*.gcno" -delete
 
-mv usr/src/linux-${_version}/arch/x86 \
-usr/src/linux-${_version}/arch/.x86
+mv usr/src/linux-${_version}/arch/x86 usr/src/linux-${_version}/arch/.x86
 rm -rf usr/src/linux-${_version}/arch/*
-mv usr/src/linux-${_version}/arch/.x86 \
-usr/src/linux-${_version}/arch/x86
+mv usr/src/linux-${_version}/arch/.x86 usr/src/linux-${_version}/arch/x86
 
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
