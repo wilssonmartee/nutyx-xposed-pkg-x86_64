@@ -3,7 +3,7 @@ url="https://github.com/xxxserxxx/gotop"
 
 contributors="Wilsson M"
 packager="Wilsson Martee <wilssonm@gmail.com>"
-run=(glibc opendoas)
+run=(glibc)
 
 name=gotop
 version=4.1.2
