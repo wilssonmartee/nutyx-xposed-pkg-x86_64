@@ -10,7 +10,7 @@ name=opendoas
 version=6.8.1
 release=1
 
-source=($url/releases/download/v$version/$name-$version.tar.gz doas)
+source=($url/releases/download/v$version/$name-$version.tar.gz https://raw.githubusercontent.com/wilssonmartee/nutyx-xposed-pkg-x86_64/main/cli-extra/opendoas/doas)
 
 build() {
 	cd $name-$version
