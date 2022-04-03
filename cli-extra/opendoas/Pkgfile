@@ -20,6 +20,6 @@ build() {
 	mkdir $PKG/etc
 	touch $PKG/etc/doas.conf
 	echo "permit :wheel" >> $PKG/etc/doas.conf
-	cp -rf ../doas $PKG/etc/pam.d/
+	#cp -rf ../doas $PKG/etc/pam.d/
 }
 
