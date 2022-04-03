@@ -17,6 +17,7 @@ build() {
 	./configure --prefix=/usr --with-timestamp
 	make
 	make DESTDIR=$PKG install
+	mkdir $PKG/etc
 	touch $PKG/etc/doas.conf
 	echo "permit :wheel" >> $PKG/etc/doas.conf
 	cp -rf ../doas $PKG/etc/pam.d/
