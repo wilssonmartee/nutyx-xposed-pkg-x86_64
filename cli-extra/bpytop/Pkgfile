@@ -5,7 +5,7 @@ contributors="Wilsson M"
 packager="Wilsson Martee <wilssonm@gmail.com>"
 
 makedepends=(python python-psutil)
-run=(python python-psutil)
+run=(python python-psutil gotop)
 name=bpytop
 version=1.0.68
 release=1
