@@ -4,7 +4,7 @@ url="https://github.com/aristocratos/bpytop"
 contributors="Wilsson M"
 packager="Wilsson Martee <wilssonm@gmail.com>"
 
-makedepends=(python python-psutil)
+makedepends=(python python-putil)
 run=(python python-psutil)
 name=bpytop
 version=1.0.68
