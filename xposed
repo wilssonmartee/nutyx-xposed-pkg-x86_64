@@ -1,3 +1,0 @@
-#!/bin/bash
-
-xposed_pkgs=(cli-extra/opendoas cli-extra/bpytop cli-extra/gotop gui-extra/rofi gui-extra/sublime-text cli-extra/htop)

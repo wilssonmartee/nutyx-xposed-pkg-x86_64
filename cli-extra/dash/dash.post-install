@@ -1,1 +1,0 @@
-grep -q bin/dash etc/shells || echo "/bin/dash" >> etc/shells
