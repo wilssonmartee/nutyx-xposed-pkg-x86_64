@@ -1,0 +1,18 @@
+description="Caurds helper"
+url="https://github.com/wilssonmartee/caurds"
+
+
+contributors="Wilsson M"
+packager="Wilsson Martee <wilssonm@gmail.com>"
+
+name=caurds
+version=1.0.2
+release=1
+
+source=($url/archive/v$version.tar.gz)
+
+build() {
+	cd $name-$version
+	mkdir $PKG/bin/	
+	cp -rf caurds $PKG/bin/
+}
