@@ -1,0 +1,30 @@
+description="Fast, isolated development environments using Docker"
+url="https://www.docker.com/"
+
+packager="Wilsson Martee <wilssonm@gmail.com>"
+
+version=2.4.1
+release=1
+
+name=docker-compose
+makedepends=(go)
+run=(docker)
+
+source=(https://github.com/docker/compose/archive/v$version.tar.gz)
+
+build() {
+  cd "compose-$version"
+  export PATH=$PATH:/usr/lib/go/bin
+  export CGO_CPPFLAGS="${CPPFLAGS}"
+  export CGO_CFLAGS="${CFLAGS}"
+  export CGO_CXXFLAGS="${CXXFLAGS}"
+  export CGO_LDFLAGS="${LDFLAGS}"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -ldflags=-X=github.com/docker/compose/v2/internal.Version=${version} -mod=readonly -modcacherw"
+  CGO_ENABLED=0 go build -trimpath -tags "e2e,kube" -o compose ./cmd
+
+  install -Dm644 LICENSE "$PKG/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm755 compose "$PKG/usr/lib/docker/cli-plugins/docker-compose"
+  install -d "$PKG/usr/bin"
+  ln -sf /usr/lib/docker/cli-plugins/docker-compose "$PKG/usr/bin/docker-compose"
+}
+
