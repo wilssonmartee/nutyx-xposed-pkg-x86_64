@@ -6,7 +6,7 @@ contributors="Wilsson M"
 packager="Wilsson Martee <wilssonm@gmail.com>"
 run=(git)
 name=caurds
-version=1.0.6
+version=1.0.7
 release=1
 
 source=($url/archive/v$version.tar.gz)
