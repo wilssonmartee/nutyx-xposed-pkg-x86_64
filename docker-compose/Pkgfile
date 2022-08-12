@@ -3,7 +3,7 @@ url="https://www.docker.com/"
 
 packager="Wilsson Martee <wilssonm@gmail.com>"
 
-version=2.7.0
+version=2.9.0
 release=1
 
 name=docker-compose
@@ -27,4 +27,3 @@ build() {
   install -d "$PKG/usr/bin"
   ln -sf /usr/lib/docker/cli-plugins/docker-compose "$PKG/usr/bin/docker-compose"
 }
-
