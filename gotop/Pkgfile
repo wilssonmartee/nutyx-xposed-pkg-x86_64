@@ -6,7 +6,7 @@ packager="Wilsson Martee <wilssonm@gmail.com>"
 run=(glibc)
 
 name=gotop
-version=4.1.4
+version=4.2.0
 release=1
 
 source=($url/releases/download/v${version}/${name}_v${version}_linux_amd64.tgz)
