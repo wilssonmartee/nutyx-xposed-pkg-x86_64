@@ -3,7 +3,7 @@ url="https://www.docker.com/"
 
 packager="Wilsson Martee <wilssonm@gmail.com>"
 
-version=2.11.2
+version=2.12.2
 release=1
 
 name=docker-compose
